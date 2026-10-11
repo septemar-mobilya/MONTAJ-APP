@@ -24,9 +24,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 #tb{position:absolute;left:0;right:0;bottom:0;min-height:52px;background:var(--bar);display:flex;justify-content:space-around;z-index:4}
 #tb button{background:none;color:#dfe5ee;border-radius:0;padding:6px 2px;flex:1;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0}
 #tb button.on{background:#3d4858;box-shadow:inset 0 -3px #4aa3ff;color:#fff}
-#pop{display:none;position:absolute;left:8px;bottom:56px;width:min(440px,calc(100% - 16px));max-height:58%;overflow:auto;background:#fffffff2;border-radius:12px;padding:10px;z-index:5;box-shadow:0 2px 14px #0005;font-size:13px}
-#pop .row{display:flex;gap:6px;align-items:center;margin:6px 0;flex-wrap:wrap}#pop input[type=number]{width:84px;padding:7px;border:1px solid #ccd3dd;border-radius:6px}#pop button.on{background:var(--blue);color:#fff}#pop select{padding:6px;border-radius:6px}
-#stage.hasAct #pop{bottom:100px}
+#pop{display:none;position:absolute;left:0;right:0;bottom:52px;background:#fffffff7;border-top:1px solid #d5dbe3;box-shadow:0 -4px 14px #0002;padding:7px 12px;z-index:5;font-size:13px;overflow:auto;max-height:45%;white-space:nowrap;align-items:center;flex-wrap:wrap;row-gap:7px;min-height:52px}
+@media (max-width:1600px){#pop>small{display:none}#pop>small+*{border-left:1px solid #cfd6df}}
+#pop[style*="block"]{display:flex!important}
+#pop>*{flex:none}
+#pop>*+*{border-left:1px solid #cfd6df;margin-left:12px;padding-left:12px}
+#pop>b{font-size:13px;color:var(--navy)}#pop>small{white-space:normal;max-width:200px;color:#5b6676;font-size:11.5px;line-height:1.3}
+#pop #mres{white-space:normal;min-width:220px;max-width:420px;line-height:1.35}
+#pop .row{display:flex;gap:6px;align-items:center;margin:0;flex-wrap:nowrap}#pop input[type=number]{width:84px;padding:7px;border:1px solid #ccd3dd;border-radius:6px}#pop button.on{background:var(--blue);color:#fff}#pop select{padding:6px;border-radius:6px}
+#stage.hasAct #pop{bottom:96px}#stage.side #pop{right:min(320px,52vw)}
 .tg{position:absolute;display:none;transform:translate(-50%,-130%);background:var(--red);color:#fff;padding:2px 7px;border-radius:6px;font-size:14px;font-weight:600;pointer-events:none;white-space:nowrap;z-index:2}
 #act{position:absolute;left:0;right:0;bottom:52px;height:44px;background:#fffffff0;display:none;gap:6px;align-items:center;padding:0 8px;overflow-x:auto;white-space:nowrap;z-index:3;border-bottom:1px solid var(--line)}#act button{padding:6px 10px;font-size:13px;flex:none}#act button:disabled{opacity:.45}#act span{font-size:12px;color:#6b7686}
 #stage.hasAct #act{display:flex}#stage.side #act{right:min(320px,52vw)}
@@ -68,7 +74,7 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 #mlList li.ok .ck{background:#1c8f4a;border-color:#1c8f4a}
 #mlList .tx{flex:1;min-width:0;cursor:pointer}#mlList .tx b{display:block;font-size:14px;color:var(--ink)}#mlList .tx span{font-size:12px;font-weight:600;color:#b45309}#mlList li.ok .tx span{color:#1c8f4a}
 #mlList li.ok .tx b{color:#14663a}
-#stage.left #act,#stage.left2 #act{left:min(310px,72vw)}#stage.left #pop,#stage.left2 #pop{left:calc(min(310px,72vw) + 8px);width:min(440px,calc(100% - min(310px,72vw) - 16px))}
+#stage.left #act,#stage.left2 #act{left:min(310px,72vw)}#stage.left #pop,#stage.left2 #pop{left:min(310px,72vw)}
 #info{background:#f4f6f9;border-radius:10px;padding:10px;max-height:42%;overflow:auto;flex:none}#info h3{margin:0 0 4px;font-size:15px;overflow-wrap:anywhere}#info .pth{font-size:11px;color:var(--mut);margin-bottom:6px;overflow-wrap:anywhere}#info div.kv{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:1px 0}#info b{font-variant-numeric:tabular-nums}
 #q{padding:9px;border:1px solid #ccd3dd;border-radius:8px;font:inherit;flex:none}
 #tree{overflow:auto;flex:1;min-height:0;margin:0 -4px;overscroll-behavior:contain}
@@ -96,8 +102,8 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
   <header id="hd">
     <div id="logo"><b>SEPTEMAR</b><small>MONTAJ</small></div>
     <div id="fi"></div>
-    <div id="ltabs"><button id="mlTab" class="ltab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="lt">Montaj Durumu</span> <span class="pc" id="mlPc">0/11</span></button><button id="svTab" class="ltab" aria-expanded="false" aria-controls="svPanel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><span class="lt">Sevkiyat Onayı</span> <span class="pc" id="svPc">0/11</span></button></div>
     <div class="hsp"></div>
+    <div id="ltabs"><button id="mlTab" class="ltab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="lt">Montaj Durumu</span> <span class="pc" id="mlPc">0/11</span></button><button id="svTab" class="ltab" aria-expanded="false" aria-controls="svPanel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><span class="lt">Sevkiyat Onayı</span> <span class="pc" id="svPc">0/11</span></button></div>
     <label class="p" id="open" for="fileIn" style="padding:9px 14px;border-radius:8px;background:var(--orange);color:#fff;font-weight:600;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0l-4 4m4-4l4 4M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></svg>Model aç</label>
     <input type="file" id="fileIn" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg" multiple hidden>
   </header>

@@ -37,14 +37,18 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 #stage.side aside{transform:none}
 #ml{position:absolute;left:0;top:0;bottom:52px;width:min(310px,72vw);z-index:4;background:#fff;box-shadow:2px 0 12px #0003;border-radius:0 12px 12px 0;display:flex;flex-direction:column;min-height:0;transform:translateX(-105%);transition:transform .25s}
 #stage.left #ml{transform:none}
-#mlTab{position:absolute;left:8px;top:8px;z-index:5;height:40px;padding:0 14px 0 10px;border-radius:20px;background:#2b323cdd;color:#fff;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;transition:left .25s}
-#stage.left #mlTab{left:calc(min(310px,72vw) + 8px)}
-#mlTab .pc{background:#2e9e5b;border-radius:10px;padding:1px 7px;font-size:12px}
+#svPanel{position:absolute;left:0;top:0;bottom:52px;width:min(310px,72vw);z-index:4;background:#fff;box-shadow:2px 0 12px #0003;border-radius:0 12px 12px 0;display:flex;flex-direction:column;min-height:0;transform:translateX(-105%);transition:transform .25s;overflow:auto;overscroll-behavior:contain}
+#stage.left2 #svPanel{transform:none}
+#ltabs{position:absolute;left:8px;top:8px;z-index:5;display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:left .25s}
+#stage.left #ltabs,#stage.left2 #ltabs{left:calc(min(310px,72vw) + 8px)}
+.ltab.on{background:var(--orange)!important}
+#mlTab,#svTab{height:40px;padding:0 14px 0 10px;border-radius:20px;background:#2b323cdd;color:#fff;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;transition:left .25s}
+#mlTab .pc,#svTab .pc{background:#2e9e5b;border-radius:10px;padding:1px 7px;font-size:12px}
 .mlh{padding:12px 14px 10px;border-bottom:1px solid var(--line);flex:none}.mlh h2{margin:0;font-size:16px;color:var(--navy)}.mlh small{color:var(--mut);font-size:12px}
 .mlbar{height:8px;background:#e3e7ee;border-radius:4px;overflow:hidden;margin-top:8px}.mlbar div{height:100%;background:#2e9e5b;transition:width .25s}
 #mlScroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
 #mlList{list-style:none;margin:0;padding:6px 8px 12px}
-#sv{border-top:6px solid #eef1f5}#sv .mlh{border-bottom:0;padding-bottom:4px}
+#sv .mlh{border-bottom:0;padding-bottom:4px}
 .svtop{display:flex;flex-direction:column;gap:6px;margin-top:10px}.svtop input{padding:9px;border:1px solid #ccd3dd;border-radius:8px;font:inherit}
 .svtop button{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--navy);color:#fff;font-weight:600;padding:10px}
 #svList{list-style:none;margin:0;padding:4px 8px 8px}
@@ -63,7 +67,7 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 #mlList li.ok .ck{background:#1c8f4a;border-color:#1c8f4a}
 #mlList .tx{flex:1;min-width:0;cursor:pointer}#mlList .tx b{display:block;font-size:14px;color:var(--ink)}#mlList .tx span{font-size:12px;font-weight:600;color:#b45309}#mlList li.ok .tx span{color:#1c8f4a}
 #mlList li.ok .tx b{color:#14663a}
-#stage.left #act{left:min(310px,72vw)}#stage.left #pop{left:calc(min(310px,72vw) + 8px);width:min(440px,calc(100% - min(310px,72vw) - 16px))}
+#stage.left #act,#stage.left2 #act{left:min(310px,72vw)}#stage.left #pop,#stage.left2 #pop{left:calc(min(310px,72vw) + 8px);width:min(440px,calc(100% - min(310px,72vw) - 16px))}
 #info{background:#f4f6f9;border-radius:10px;padding:10px;max-height:42%;overflow:auto;flex:none}#info h3{margin:0 0 4px;font-size:15px;overflow-wrap:anywhere}#info .pth{font-size:11px;color:var(--mut);margin-bottom:6px;overflow-wrap:anywhere}#info div.kv{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:1px 0}#info b{font-variant-numeric:tabular-nums}
 #q{padding:9px;border:1px solid #ccd3dd;border-radius:8px;font:inherit;flex:none}
 #tree{overflow:auto;flex:1;min-height:0;margin:0 -4px;overscroll-behavior:contain}
@@ -100,11 +104,11 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
       <div class="tg"></div><div class="tg"></div><div class="tg"></div>
       <div id="pop"></div>
       <canvas id="pen"></canvas>
-      <button id="mlTab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Montaj Durumu <span class="pc" id="mlPc">0/11</span></button>
-      <section id="ml" aria-label="Montaj durumu"><div class="mlh"><h2>Montaj Durumu</h2><small id="mlSum"></small><div class="mlbar"><div id="mlBar"></div></div></div><div id="mlScroll"><ul id="mlList"></ul>
-        <section id="sv" aria-label="Sevkiyat onayı"><div class="mlh"><h2>Sevkiyat Onayı</h2><small id="svSum"></small><div class="mlbar"><div id="svBar"></div></div>
+      <div id="ltabs"><button id="mlTab" class="ltab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Montaj Durumu <span class="pc" id="mlPc">0/11</span></button><button id="svTab" class="ltab" aria-expanded="false" aria-controls="svPanel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Sevkiyat Onayı <span class="pc" id="svPc">0/11</span></button></div>
+      <section id="svPanel" aria-label="Sevkiyat onayı"><div class="mlh"><h2>Sevkiyat Onayı</h2><small id="svSum"></small><div class="mlbar"><div id="svBar"></div></div>
           <div class="svtop"><input id="svWho" placeholder="Teslim alan (ad soyad)" autocomplete="name"><button id="svScan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M7 12h10"/></svg>Paket QR'ı okut</button></div></div>
-          <ul id="svList"></ul><div id="svLog"></div></section></div></section>
+          <ul id="svList"></ul><div id="svLog"></div></section>
+      <section id="ml" aria-label="Montaj durumu"><div class="mlh"><h2>Montaj Durumu</h2><small id="mlSum"></small><div class="mlbar"><div id="mlBar"></div></div></div><div id="mlScroll"><ul id="mlList"></ul></div></section>
       <div id="act"><button id="aH">Gizle</button><button id="aG">Şeffaflaştır</button><button id="aI">Yalnız bunu göster</button><button id="aA">Tümünü göster</button><button id="clr">Seçimi bırak</button><button id="aU">Geri al</button><span id="aC"></span></div>
       <aside><div id="info"></div><input id="q" type="search" placeholder="Mobilya veya parça ara…"><div id="tree"></div></aside>
       <div id="tb"></div>
@@ -6884,6 +6888,8 @@ if (typeof exports === 'object' && typeof module === 'object')
         const ok = ML.filter(([t]) => { var _a; return ((_a = SV.items[t]) === null || _a === void 0 ? void 0 : _a.s) == 'ok'; }).length, bad = ML.filter(([t]) => { var _a; return ((_a = SV.items[t]) === null || _a === void 0 ? void 0 : _a.s) == 'bad'; }).length;
         $('#svSum').textContent = `${ok} / ${ML.length} teslim alındı` + (bad ? ` · ${bad} sorunlu` : '');
         $('#svBar').style.width = (ok / ML.length * 100) + '%';
+        $('#svPc').textContent = ok + '/' + ML.length;
+        $('#svPc').style.background = bad ? '#b91c1c' : '#2e9e5b';
         $('#svList').innerHTML = ML.map(([t], i) => {
             const it = SV.items[t] || {}, s = it.s || '';
             const st = s == 'ok' ? `✓ Teslim alındı · ${fmtT(it.t)}${it.w ? ' · ' + esc(it.w) : ''}` : s == 'bad' ? `⚠ Eksik / hasarlı · ${fmtT(it.t)}${it.w ? ' · ' + esc(it.w) : ''}` : 'Sevkiyat bekleniyor';
@@ -7021,8 +7027,18 @@ if (typeof exports === 'object' && typeof module === 'object')
         if (top.length > 1)
             toast(`${t}: ${top.length} mobilya seçildi`);
     }
-    function setLeft(on) { stage.classList.toggle('left', on); $('#mlTab').setAttribute('aria-expanded', on); }
-    $('#mlTab').onclick = () => setLeft(!stage.classList.contains('left'));
+    // Sol paneller: aynı anda biri açık (Montaj Durumu ya da Sevkiyat Onayı)
+    function setPanel(w) {
+        stage.classList.toggle('left', w == 'ml');
+        stage.classList.toggle('left2', w == 'sv');
+        $('#mlTab').setAttribute('aria-expanded', w == 'ml');
+        $('#svTab').setAttribute('aria-expanded', w == 'sv');
+        $('#mlTab').classList.toggle('on', w == 'ml');
+        $('#svTab').classList.toggle('on', w == 'sv');
+    }
+    const setLeft = on => setPanel(on ? 'ml' : null);
+    $('#mlTab').onclick = () => setPanel(stage.classList.contains('left') ? null : 'ml');
+    $('#svTab').onclick = () => setPanel(stage.classList.contains('left2') ? null : 'sv');
     mlRender();
     /* ---- parça ağacı ---- */
     function markHasMesh(o) { let h = !!o.isMesh; o.children.forEach(c => { if (markHasMesh(c))

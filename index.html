@@ -16,7 +16,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 #app{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr)}
 #hd{display:flex;align-items:center;gap:16px;padding:8px 16px;color:#cfd8e6;min-width:0}
 #logo{text-align:center;color:#fff;flex:none;line-height:1.15}#logo b{display:block;letter-spacing:.22em;font-size:15px;font-weight:500}#logo small{font-size:8px;letter-spacing:.3em;opacity:.7}
-#fi{min-width:0;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px}#fi b{color:#fff;font-size:15px;font-weight:600;margin-right:10px}
+#fi{min-width:0;flex:0 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px}#fi b{color:#fff;font-size:15px;font-weight:600;margin-right:10px}
 #open{flex:none;display:inline-flex;align-items:center;gap:6px}
 #main{background:#eef1f5;border-radius:14px 14px 0 0;overflow:hidden;padding:8px;min-height:0}
 #stage{position:relative;width:100%;height:100%;background:var(--stage);border-radius:10px;overflow:hidden}
@@ -39,8 +39,9 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 #stage.left #ml{transform:none}
 #svPanel{position:absolute;left:0;top:0;bottom:52px;width:min(310px,72vw);z-index:4;background:#fff;box-shadow:2px 0 12px #0003;border-radius:0 12px 12px 0;display:flex;flex-direction:column;min-height:0;transform:translateX(-105%);transition:transform .25s;overflow:auto;overscroll-behavior:contain}
 #stage.left2 #svPanel{transform:none}
-#ltabs{position:absolute;left:8px;top:8px;z-index:5;display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:left .25s}
-#stage.left #ltabs,#stage.left2 #ltabs{left:calc(min(310px,72vw) + 8px)}
+#ltabs{display:flex;gap:8px;flex:none}
+.hsp{flex:1}
+#ltabs .ltab{background:#24344d!important;border:1px solid #3a4b66}#ltabs .ltab.on{background:var(--orange)!important;border-color:var(--orange)}
 .ltab.on{background:var(--orange)!important}
 #mlTab,#svTab{height:40px;padding:0 14px 0 10px;border-radius:20px;background:#2b323cdd;color:#fff;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;transition:left .25s}
 #mlTab .pc,#svTab .pc{background:#2e9e5b;border-radius:10px;padding:1px 7px;font-size:12px}
@@ -84,7 +85,7 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 #drop{position:absolute;inset:8px;border:2px dashed var(--orange);border-radius:12px;background:#fff1e6cc;display:grid;place-items:center;font-size:18px;font-weight:600;color:#b4530a;pointer-events:none;z-index:7}
 #pkp{display:none}
 @media print{body.pp>*:not(#pkp){display:none!important}#pkp{display:block!important;background:#fff}}
-@media (max-width:700px){#logo small,#fi span{display:none}#hd{gap:10px;padding:6px 10px}#tb button{font-size:10px}}
+@media (max-width:700px){#logo small,#fi span{display:none}.ltab .lt{display:none}#hd{gap:10px;padding:6px 10px}#tb button{font-size:10px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -95,6 +96,8 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
   <header id="hd">
     <div id="logo"><b>SEPTEMAR</b><small>MONTAJ</small></div>
     <div id="fi"></div>
+    <div id="ltabs"><button id="mlTab" class="ltab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span class="lt">Montaj Durumu</span> <span class="pc" id="mlPc">0/11</span></button><button id="svTab" class="ltab" aria-expanded="false" aria-controls="svPanel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><span class="lt">Sevkiyat Onayı</span> <span class="pc" id="svPc">0/11</span></button></div>
+    <div class="hsp"></div>
     <label class="p" id="open" for="fileIn" style="padding:9px 14px;border-radius:8px;background:var(--orange);color:#fff;font-weight:600;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 0l-4 4m4-4l4 4M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></svg>Model aç</label>
     <input type="file" id="fileIn" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg" multiple hidden>
   </header>
@@ -104,7 +107,6 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
       <div class="tg"></div><div class="tg"></div><div class="tg"></div>
       <div id="pop"></div>
       <canvas id="pen"></canvas>
-      <div id="ltabs"><button id="mlTab" class="ltab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Montaj Durumu <span class="pc" id="mlPc">0/11</span></button><button id="svTab" class="ltab" aria-expanded="false" aria-controls="svPanel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Sevkiyat Onayı <span class="pc" id="svPc">0/11</span></button></div>
       <section id="svPanel" aria-label="Sevkiyat onayı"><div class="mlh"><h2>Sevkiyat Onayı</h2><small id="svSum"></small><div class="mlbar"><div id="svBar"></div></div>
           <div class="svtop"><input id="svWho" placeholder="Teslim alan (ad soyad)" autocomplete="name"><button id="svScan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M7 12h10"/></svg>Paket QR'ı okut</button></div></div>
           <ul id="svList"></ul><div id="svLog"></div></section>
@@ -7466,12 +7468,6 @@ if (typeof exports === 'object' && typeof module === 'object')
     /* ---- başlat ---- */
     setMode('rot');
     hl();
-    if (innerWidth >= 1000) {
-        stage.classList.add('side');
-        hl();
-    }
-    if (innerWidth >= 760)
-        setLeft(true);
     fitSz();
     (function start() {
         let u = null;

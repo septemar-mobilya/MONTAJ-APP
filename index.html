@@ -24,18 +24,32 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 #tb{position:absolute;left:0;right:0;bottom:0;min-height:52px;background:var(--bar);display:flex;justify-content:space-around;z-index:4}
 #tb button{background:none;color:#dfe5ee;border-radius:0;padding:6px 2px;flex:1;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0}
 #tb button.on{background:#3d4858;box-shadow:inset 0 -3px #4aa3ff;color:#fff}
-#pop{display:none;position:absolute;left:8px;bottom:100px;width:min(440px,calc(100% - 16px));max-height:58%;overflow:auto;background:#fffffff2;border-radius:12px;padding:10px;z-index:5;box-shadow:0 2px 14px #0005;font-size:13px}
+#pop{display:none;position:absolute;left:8px;bottom:56px;width:min(440px,calc(100% - 16px));max-height:58%;overflow:auto;background:#fffffff2;border-radius:12px;padding:10px;z-index:5;box-shadow:0 2px 14px #0005;font-size:13px}
 #pop .row{display:flex;gap:6px;align-items:center;margin:6px 0;flex-wrap:wrap}#pop input[type=number]{width:84px;padding:7px;border:1px solid #ccd3dd;border-radius:6px}#pop button.on{background:var(--blue);color:#fff}#pop select{padding:6px;border-radius:6px}
-#stage.hasAct #pop{bottom:144px}
+#stage.hasAct #pop{bottom:100px}
 .tg{position:absolute;display:none;transform:translate(-50%,-130%);background:var(--red);color:#fff;padding:2px 7px;border-radius:6px;font-size:14px;font-weight:600;pointer-events:none;white-space:nowrap;z-index:2}
-#exb{position:absolute;left:0;right:0;bottom:52px;height:44px;background:#fffffff0;display:flex;align-items:center;gap:8px;padding:0 10px;z-index:3;font-size:13px}#exb input{flex:1;min-width:0;touch-action:none}#exb button{padding:5px 8px;font-size:12px;white-space:nowrap}
-#act{position:absolute;left:0;right:0;bottom:96px;height:44px;background:#fffffff0;display:none;gap:6px;align-items:center;padding:0 8px;overflow-x:auto;white-space:nowrap;z-index:3;border-bottom:1px solid var(--line)}#act button{padding:6px 10px;font-size:13px;flex:none}#act button:disabled{opacity:.45}#act span{font-size:12px;color:#6b7686}
+#act{position:absolute;left:0;right:0;bottom:52px;height:44px;background:#fffffff0;display:none;gap:6px;align-items:center;padding:0 8px;overflow-x:auto;white-space:nowrap;z-index:3;border-bottom:1px solid var(--line)}#act button{padding:6px 10px;font-size:13px;flex:none}#act button:disabled{opacity:.45}#act span{font-size:12px;color:#6b7686}
 #stage.hasAct #act{display:flex}#stage.side #act{right:min(320px,52vw)}
 #pen{position:absolute;inset:0;z-index:2;display:none;touch-action:none;cursor:crosshair}
 #fs{position:absolute;top:8px;right:8px;z-index:5;width:40px;height:40px;border-radius:50%;background:#2b323cdd;color:#fff;font-size:18px;padding:0;transition:right .25s}
 #stage.side #fs{right:calc(min(320px,52vw) + 8px)}
-aside{position:absolute;right:0;top:0;bottom:96px;width:min(320px,52vw);z-index:3;transform:translateX(105%);transition:transform .25s;border-radius:12px 0 0 12px;box-shadow:-2px 0 12px #0003;background:#fff;display:flex;flex-direction:column;min-height:0;padding:10px;gap:8px;overflow:hidden}
+aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:3;transform:translateX(105%);transition:transform .25s;border-radius:12px 0 0 12px;box-shadow:-2px 0 12px #0003;background:#fff;display:flex;flex-direction:column;min-height:0;padding:10px;gap:8px;overflow:hidden}
 #stage.side aside{transform:none}
+#ml{position:absolute;left:0;top:0;bottom:52px;width:min(310px,72vw);z-index:4;background:#fff;box-shadow:2px 0 12px #0003;border-radius:0 12px 12px 0;display:flex;flex-direction:column;min-height:0;transform:translateX(-105%);transition:transform .25s}
+#stage.left #ml{transform:none}
+#mlTab{position:absolute;left:8px;top:8px;z-index:5;height:40px;padding:0 14px 0 10px;border-radius:20px;background:#2b323cdd;color:#fff;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;transition:left .25s}
+#stage.left #mlTab{left:calc(min(310px,72vw) + 8px)}
+#mlTab .pc{background:#2e9e5b;border-radius:10px;padding:1px 7px;font-size:12px}
+.mlh{padding:12px 14px 10px;border-bottom:1px solid var(--line);flex:none}.mlh h2{margin:0;font-size:16px;color:var(--navy)}.mlh small{color:var(--mut);font-size:12px}
+.mlbar{height:8px;background:#e3e7ee;border-radius:4px;overflow:hidden;margin-top:8px}.mlbar div{height:100%;background:#2e9e5b;transition:width .25s}
+#mlList{list-style:none;margin:0;padding:6px 8px 12px;overflow:auto;flex:1;min-height:0;overscroll-behavior:contain}
+#mlList li{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:10px;margin:3px 0;background:#fff7ed;border:1px solid #fde3c7}
+#mlList li.ok{background:#e6f6ec;border-color:#bfe6cd}
+#mlList .ck{width:34px;height:34px;flex:none;border-radius:8px;border:2px solid #c9a27a;background:#fff;padding:0;display:grid;place-items:center;color:#fff}
+#mlList li.ok .ck{background:#1c8f4a;border-color:#1c8f4a}
+#mlList .tx{flex:1;min-width:0;cursor:pointer}#mlList .tx b{display:block;font-size:14px;color:var(--ink)}#mlList .tx span{font-size:12px;font-weight:600;color:#b45309}#mlList li.ok .tx span{color:#1c8f4a}
+#mlList li.ok .tx b{color:#14663a}
+#stage.left #act{left:min(310px,72vw)}#stage.left #pop{left:calc(min(310px,72vw) + 8px);width:min(440px,calc(100% - min(310px,72vw) - 16px))}
 #info{background:#f4f6f9;border-radius:10px;padding:10px;max-height:42%;overflow:auto;flex:none}#info h3{margin:0 0 4px;font-size:15px;overflow-wrap:anywhere}#info .pth{font-size:11px;color:var(--mut);margin-bottom:6px;overflow-wrap:anywhere}#info div.kv{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:1px 0}#info b{font-variant-numeric:tabular-nums}
 #q{padding:9px;border:1px solid #ccd3dd;border-radius:8px;font:inherit;flex:none}
 #tree{overflow:auto;flex:1;min-height:0;margin:0 -4px;overscroll-behavior:contain}
@@ -71,9 +85,10 @@ aside{position:absolute;right:0;top:0;bottom:96px;width:min(320px,52vw);z-index:
       <button id="fs" title="Tam ekran" aria-label="Tam ekran">⛶</button>
       <div class="tg"></div><div class="tg"></div><div class="tg"></div>
       <div id="pop"></div>
-      <div id="exb"><span>Patlat</span><input id="ex" type="range" min="0" max="1" step=".01" value="0" aria-label="Patlatma"><button id="clr">Seçimi temizle</button></div>
       <canvas id="pen"></canvas>
-      <div id="act"><button id="aH">Gizle</button><button id="aG">Şeffaflaştır</button><button id="aI">Yalnız bunu göster</button><button id="aA">Tümünü göster</button><button id="aU">Geri al</button><span id="aC"></span></div>
+      <button id="mlTab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Montaj Durumu <span class="pc" id="mlPc">0/11</span></button>
+      <section id="ml" aria-label="Montaj durumu"><div class="mlh"><h2>Montaj Durumu</h2><small id="mlSum"></small><div class="mlbar"><div id="mlBar"></div></div></div><ul id="mlList"></ul></section>
+      <div id="act"><button id="aH">Gizle</button><button id="aG">Şeffaflaştır</button><button id="aI">Yalnız bunu göster</button><button id="aA">Tümünü göster</button><button id="clr">Seçimi bırak</button><button id="aU">Geri al</button><span id="aC"></span></div>
       <aside><div id="info"></div><input id="q" type="search" placeholder="Mobilya veya parça ara…"><div id="tree"></div></aside>
       <div id="tb"></div>
       <div id="toast" hidden></div>
@@ -387,14 +402,7 @@ function view(pos,up,hw,hh,pw,ph,tg){const oc=new THREE.OrthographicCamera(-hw,h
 /* ---- seçim, görünürlük ---- */
 function focus(ks){const bb=new THREE.Box3();(ks.length?ks.flatMap(k=>parts[k].meshes):allMeshes).forEach(m=>bb.expandByObject(m));const c=bb.getCenter(new THREE.Vector3()),s=bb.getSize(new THREE.Vector3()).length();const d=cam.position.clone().sub(ctl.target).normalize();ctl.target.copy(c);cam.position.copy(c).addScaledVector(d,ks.length?Math.max(s*2.5,.5):1.9)}
 function actUI(){const on=sel.length>0||hid.size>0||gho.size>0;stage.classList.toggle('hasAct',on);['aH','aG','aI'].forEach(i=>$('#'+i).disabled=!sel.length);$('#aG').textContent=sel.length&&sel.every(k=>gho.has(k))?'Opak yap':'Şeffaflaştır';$('#aC').textContent=(hid.size?hid.size+' gizli':'')+(hid.size&&gho.size?' · ':'')+(gho.size?gho.size+' şeffaf':'')}
-// Patlatma mobilya mobilya: her mobilya bütün hâlinde, kabin merkezinden dışarı (yatay) kayar
-let FURN=[];
-function buildFurn(){let lvl=ROOT.children;while(lvl.length==1&&lvl[0].children.length)lvl=lvl[0].children;
- FURN=lvl.map(it=>{const ms=[];leafKeys(it).forEach(k=>ms.push(...parts[k].meshes));if(!it.children.length&&it.key)ms.push(...parts[it.key].meshes);
-  const bb=new THREE.Box3();ms.forEach(m=>bb.expandByObject(m));const c=bb.isEmpty()?new V3():bb.getCenter(new V3()),d=new V3(c.x,0,c.z);
-  if(d.length()<.05)d.copy(c);if(d.length()<1e-6)d.set(0,1,0);return{it,meshes:[...new Set(ms)],dir:d.normalize()}})}
-function explode(v){dirty=true;exv=v;allMeshes.forEach(m=>m.userData.wp=null);
- FURN.forEach(f=>f.meshes.forEach(m=>{m.position.copy(m.parent.worldToLocal(m.userData.w0.clone().addScaledVector(f.dir,v*.6)))}))}
+
 function applyVis(){const S1=new Set(sel);for(const[k,p]of Object.entries(parts)){const kind=S1.has(k)?'hl':gho.has(k)?'ghost':(sel.length&&dimOn)?'dim':null;
   p.meshes.forEach(m=>{m.visible=!hid.has(k);setKind(m,kind);m.renderOrder=kind=='dim'||kind=='ghost'?2:0})}
  dirty=true;actUI();refreshRows();exUI();if(PL.length)schedOl(true)}
@@ -409,8 +417,28 @@ $('#aG').onclick=()=>{pushHist();const all=sel.every(k=>gho.has(k));sel.forEach(
 $('#aI').onclick=()=>{pushHist();Object.keys(parts).forEach(k=>{if(!sel.includes(k))hid.add(k)});applyVis()};
 $('#aA').onclick=()=>{pushHist();hid.clear();gho.clear();selectItem(null,{tap:true})};
 $('#aU').onclick=()=>{const s=HIST.pop();if(!s)return toast('Geri alınacak işlem yok');hid.clear();s[0].forEach(k=>hid.add(k));gho.clear();s[1].forEach(k=>gho.add(k));applyVis()};
-$('#ex').oninput=e=>{explode(+e.target.value);allMeshes.forEach(m=>m.userData.wbox=null);cullClipped();if(PL.length)schedOl()};
 $('#clr').onclick=()=>selectItem(null);
+
+/* ---- montaj durumu (sol menü) ---- */
+// Her kalem işaretlenince "Montaj tamamlandı" olur ve yeşile döner. Durum bu cihazda, model adına göre saklanır.
+const ML=[['Kaba zemin',['kaba zemin','kaba doseme']],['Kaba duvar',['kaba duvar']],['Grid-tavan',['grid','tavan']],['Alabanda',['alabanda']],['Elbise dolabı',['elbise','gardirop','dolap']],['Yatak',['yatak','baza']],['Komodin',['komodin']],['Çalışma masası',['calisma','masa']],['Kapılar',['kapi']],['Duvar panelleri',['duvar panel']],['Parke',['parke']]];
+let mlKey='montaj:ornek',mlDone={};
+const trn=s=>s.toLocaleLowerCase('tr').replace(/ı/g,'i').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[_\-]+/g,' ');
+function mlLoad(label){mlKey='montaj:'+label;try{mlDone=JSON.parse(localStorage[mlKey]||'{}')}catch{mlDone={}}mlRender()}
+function mlSave(){try{localStorage[mlKey]=JSON.stringify(mlDone)}catch{}}
+function mlRender(){const n=ML.filter(([t])=>mlDone[t]).length;
+ $('#mlList').innerHTML=ML.map(([t],i)=>{const ok=!!mlDone[t];return`<li class="${ok?'ok':''}"><button class="ck" data-i="${i}" role="checkbox" aria-checked="${ok}" aria-label="${t} montajı tamamlandı">${ok?svg('M5 12l5 5L20 7',22):''}</button><div class="tx" data-s="${i}"><b>${t}</b><span>${ok?'✓ Montaj tamamlandı':'Montajı devam ediyor'}</span></div></li>`}).join('');
+ $('#mlSum').textContent=`${n} / ${ML.length} mobilyanın montajı tamamlandı`;$('#mlBar').style.width=(n/ML.length*100)+'%';$('#mlPc').textContent=n+'/'+ML.length;
+ $$('#mlList .ck').forEach(b=>b.onclick=()=>{const t=ML[+b.dataset.i][0];mlDone[t]?delete mlDone[t]:mlDone[t]=new Date().toISOString();mlSave();mlRender()});
+ $$('#mlList .tx').forEach(d=>d.onclick=()=>mlShow(+d.dataset.s))}
+// Mobilya adına dokununca modelde eşleşen mobilyalar seçilir
+function mlShow(i){const[t,kw]=ML[i];const hits=ITEMS.filter(it=>{const n=trn(it.name);return kw.some(k=>n.includes(k))});
+ const top=hits.filter(h=>!hits.some(o=>o!==h&&isAncestor(o.obj,h.obj)));
+ if(!top.length)return toast(t+': modelde bu isimde mobilya bulunamadı');
+ selItem=top[0];select([...new Set(top.flatMap(leafKeys))]);if(top.length>1)toast(`${t}: ${top.length} mobilya seçildi`)}
+function setLeft(on){stage.classList.toggle('left',on);$('#mlTab').setAttribute('aria-expanded',on)}
+$('#mlTab').onclick=()=>setLeft(!stage.classList.contains('left'));
+mlRender();
 
 /* ---- parça ağacı ---- */
 function markHasMesh(o){let h=!!o.isMesh;o.children.forEach(c=>{if(markHasMesh(c))h=true});o.userData._hm=h;return h}
@@ -465,7 +493,7 @@ function info(){const el=$('#info');
 function boot(root,label){
  resetTools();
  if(model){scene.remove(model);model.traverse(o=>{if(o.isMesh||o.isLineSegments)o.geometry.dispose()});MATS.forEach(m=>m.dispose());MATS.clear();HL_MATS.clear();matCache=new Map()}
- parts={};sel=[];selItem=null;allMeshes=[];hid.clear();gho.clear();HIST.length=0;TRIS=0;$('#ex').value=0;exv=0;
+ parts={};sel=[];selItem=null;allMeshes=[];hid.clear();gho.clear();HIST.length=0;TRIS=0;
  model=new THREE.Group();model.add(root);scene.add(model);
  const b=new THREE.Box3().setFromObject(model),M=Math.max(...b.getSize(new V3()).toArray())||1;F=M<20?1000:1;sc=1/M;model.scale.setScalar(sc);model.updateMatrixWorld(true);
  model.position.sub(new THREE.Box3().setFromObject(model).getCenter(new V3()));model.updateMatrixWorld(true);BB=new THREE.Box3().setFromObject(model);
@@ -475,10 +503,10 @@ function boot(root,label){
   TRIS+=(g.index?g.index.count:g.attributes.position.count)/3;allMeshes.push(o);o.userData.w0=o.getWorldPosition(new V3());o.userData.wbox=null;o.userData.wp=null});
  let n=0;ITEMS.forEach(it=>{if(it.children.length)return;const k='p'+(n++);it.key=k;const ms=[];it.obj.traverse(x=>{if(x.isMesh){ms.push(x);x.userData.k=k}});parts[k]={name:it.name,meshes:ms,item:it}});
  allMeshes.forEach(m=>{if(!m.userData.k||!parts[m.userData.k]){const k='p'+(n++);parts[k]={name:niceName(m),meshes:[m]};m.userData.k=k}});
- buildFurn();for(const p of Object.values(parts)){const bb=new THREE.Box3();p.meshes.forEach(m=>bb.expandByObject(m));p.bb=bb.clone();p.dir=bb.getCenter(new V3()).normalize();p.dim=bb.getSize(new V3()).toArray().map(v=>Math.round(v/sc*F)).sort((a,b)=>b-a)}
+ for(const p of Object.values(parts)){const bb=new THREE.Box3();p.meshes.forEach(m=>bb.expandByObject(m));p.bb=bb.clone();p.dir=bb.getCenter(new V3()).normalize();p.dim=bb.getSize(new V3()).toArray().map(v=>Math.round(v/sc*F)).sort((a,b)=>b-a)}
  pl.forEach(q=>{q.on=false;q.s=1;q.v=0});ap=2;olSlow=false;
  ctl.target.set(0,0,0);cam.position.set(1.2,.8,1.6);
- $('#fi').innerHTML=`<b>${esc(label)}</b><span>${Object.keys(parts).length} parça · ${Math.round(TRIS).toLocaleString('tr-TR')} üçgen</span>`;
+ mlLoad(label);$('#fi').innerHTML=`<b>${esc(label)}</b><span>${Object.keys(parts).length} parça · ${Math.round(TRIS).toLocaleString('tr-TR')} üçgen</span>`;
  $('#q').value='';renderTree();applyCut();applyVis();info();dirty=true}
 
 /* ---- yükleme ---- */
@@ -539,7 +567,7 @@ function sample(){
  return root}
 
 /* ---- başlat ---- */
-setMode('rot');hl();if(innerWidth>=1000){stage.classList.add('side');hl()}
+setMode('rot');hl();if(innerWidth>=1000){stage.classList.add('side');hl()}if(innerWidth>=760)setLeft(true);
 fitSz();
 (function start(){let u=null;try{u=new URLSearchParams(location.search).get('model')}catch{}
  if(!u){boot(sample(),'Örnek kabin (gösterim)');return}

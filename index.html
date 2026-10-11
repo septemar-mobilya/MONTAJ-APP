@@ -42,7 +42,21 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 #mlTab .pc{background:#2e9e5b;border-radius:10px;padding:1px 7px;font-size:12px}
 .mlh{padding:12px 14px 10px;border-bottom:1px solid var(--line);flex:none}.mlh h2{margin:0;font-size:16px;color:var(--navy)}.mlh small{color:var(--mut);font-size:12px}
 .mlbar{height:8px;background:#e3e7ee;border-radius:4px;overflow:hidden;margin-top:8px}.mlbar div{height:100%;background:#2e9e5b;transition:width .25s}
-#mlList{list-style:none;margin:0;padding:6px 8px 12px;overflow:auto;flex:1;min-height:0;overscroll-behavior:contain}
+#mlScroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+#mlList{list-style:none;margin:0;padding:6px 8px 12px}
+#sv{border-top:6px solid #eef1f5}#sv .mlh{border-bottom:0;padding-bottom:4px}
+.svtop{display:flex;flex-direction:column;gap:6px;margin-top:10px}.svtop input{padding:9px;border:1px solid #ccd3dd;border-radius:8px;font:inherit}
+.svtop button{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--navy);color:#fff;font-weight:600;padding:10px}
+#svList{list-style:none;margin:0;padding:4px 8px 8px}
+#svList li{padding:8px;border-radius:10px;margin:4px 0;background:#f4f6f9;border:1px solid var(--line)}
+#svList li.ok{background:#e6f6ec;border-color:#bfe6cd}#svList li.bad{background:#fdecec;border-color:#f5c2c2}
+#svList .top{display:flex;align-items:center;gap:8px}#svList .top b{flex:1;min-width:0;font-size:14px}
+#svList .st{font-size:12px;font-weight:600;color:#6b7686;margin-top:2px}#svList li.ok .st{color:#1c8f4a}#svList li.bad .st{color:#b91c1c}
+#svList .bt{display:flex;gap:6px;margin-top:6px}#svList .bt button{flex:1;padding:7px 6px;font-size:12px;font-weight:600}
+#svList .bt .y.on{background:#1c8f4a;color:#fff}#svList .bt .n.on{background:#b91c1c;color:#fff}
+#svList input{width:100%;margin-top:6px;padding:7px;border:1px solid #f5c2c2;border-radius:6px;font:inherit;font-size:13px}
+#svLog{padding:0 14px 16px;font-size:12px;color:#5b6676}#svLog h3{font-size:13px;margin:6px 0;color:var(--navy)}#svLog div{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #eef1f5}#svLog b{color:var(--ink);overflow-wrap:anywhere}
+#scan video{width:min(92vw,520px);border-radius:12px;background:#000}
 #mlList li{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:10px;margin:3px 0;background:#fff7ed;border:1px solid #fde3c7}
 #mlList li.ok{background:#e6f6ec;border-color:#bfe6cd}
 #mlList .ck{width:34px;height:34px;flex:none;border-radius:8px;border:2px solid #c9a27a;background:#fff;padding:0;display:grid;place-items:center;color:#fff}
@@ -87,7 +101,10 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
       <div id="pop"></div>
       <canvas id="pen"></canvas>
       <button id="mlTab" aria-expanded="false" aria-controls="ml"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Montaj Durumu <span class="pc" id="mlPc">0/11</span></button>
-      <section id="ml" aria-label="Montaj durumu"><div class="mlh"><h2>Montaj Durumu</h2><small id="mlSum"></small><div class="mlbar"><div id="mlBar"></div></div></div><ul id="mlList"></ul></section>
+      <section id="ml" aria-label="Montaj durumu"><div class="mlh"><h2>Montaj Durumu</h2><small id="mlSum"></small><div class="mlbar"><div id="mlBar"></div></div></div><div id="mlScroll"><ul id="mlList"></ul>
+        <section id="sv" aria-label="Sevkiyat onayı"><div class="mlh"><h2>Sevkiyat Onayı</h2><small id="svSum"></small><div class="mlbar"><div id="svBar"></div></div>
+          <div class="svtop"><input id="svWho" placeholder="Teslim alan (ad soyad)" autocomplete="name"><button id="svScan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M7 12h10"/></svg>Paket QR'ı okut</button></div></div>
+          <ul id="svList"></ul><div id="svLog"></div></section></div></section>
       <div id="act"><button id="aH">Gizle</button><button id="aG">Şeffaflaştır</button><button id="aI">Yalnız bunu göster</button><button id="aA">Tümünü göster</button><button id="clr">Seçimi bırak</button><button id="aU">Geri al</button><span id="aC"></span></div>
       <aside><div id="info"></div><input id="q" type="search" placeholder="Mobilya veya parça ara…"><div id="tree"></div></aside>
       <div id="tb"></div>
@@ -99,6 +116,7 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 </div>
 <div class="ov" id="det" style="overflow:auto;justify-content:flex-start;padding:10px"><div style="display:flex;gap:8px"><button id="dx">Kapat</button><button class="p" id="dpng">PNG indir</button><button id="dpr">🖨 Gerçek ölçekte yazdır</button></div><div id="dsv" style="background:#fff;width:min(96vw,720px);border-radius:10px;padding:8px"></div></div>
 <div id="pkp"></div>
+<div class="ov" id="scan"><video id="cam" playsinline muted></video><div id="scanT">Paket etiketindeki QR kodu kameraya gösterin</div><button id="scanX">Kapat</button></div>
 
 <div id="err" hidden style="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#7f1d1d;color:#fff;padding:10px 12px;border-radius:10px;font:13px/1.4 system-ui,sans-serif;max-height:40%;overflow:auto"></div>
 <script>
@@ -6836,7 +6854,148 @@ if (typeof exports === 'object' && typeof module === 'object')
     }
     catch (_a) {
         mlDone = {};
-    } mlRender(); }
+    } mlRender(); svLoad(label); }
+    /* ---- sevkiyat onayı ---- */
+    // Her mobilya için: Bekleniyor → Teslim alındı (yeşil) ya da Eksik / hasarlı (kırmızı, not ile). Okutulan paket QR'ları ayrıca kaydedilir.
+    let svKey = 'sevk:ornek', SV = { items: {}, pk: [] };
+    function svLoad(label) { svKey = 'sevk:' + label; try {
+        SV = JSON.parse(localStorage[svKey] || 'null') || { items: {}, pk: [] };
+    }
+    catch (_a) {
+        SV = { items: {}, pk: [] };
+    } SV.items = SV.items || {}; SV.pk = SV.pk || []; svRender(); }
+    function svSave() { try {
+        localStorage[svKey] = JSON.stringify(SV);
+    }
+    catch (_a) { } }
+    let svWho = '';
+    try {
+        svWho = localStorage.svWho || '';
+    }
+    catch (_b) { }
+    const fmtT = iso => { try {
+        return new Date(iso).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
+    catch (_a) {
+        return iso;
+    } };
+    function svRender() {
+        $('#svWho').value = svWho;
+        const ok = ML.filter(([t]) => { var _a; return ((_a = SV.items[t]) === null || _a === void 0 ? void 0 : _a.s) == 'ok'; }).length, bad = ML.filter(([t]) => { var _a; return ((_a = SV.items[t]) === null || _a === void 0 ? void 0 : _a.s) == 'bad'; }).length;
+        $('#svSum').textContent = `${ok} / ${ML.length} teslim alındı` + (bad ? ` · ${bad} sorunlu` : '');
+        $('#svBar').style.width = (ok / ML.length * 100) + '%';
+        $('#svList').innerHTML = ML.map(([t], i) => {
+            const it = SV.items[t] || {}, s = it.s || '';
+            const st = s == 'ok' ? `✓ Teslim alındı · ${fmtT(it.t)}${it.w ? ' · ' + esc(it.w) : ''}` : s == 'bad' ? `⚠ Eksik / hasarlı · ${fmtT(it.t)}${it.w ? ' · ' + esc(it.w) : ''}` : 'Sevkiyat bekleniyor';
+            return `<li class="${s}"><div class="top"><b>${t}</b></div><div class="st">${st}</div><div class="bt"><button class="y ${s == 'ok' ? 'on' : ''}" data-y="${i}">✓ Teslim alındı</button><button class="n ${s == 'bad' ? 'on' : ''}" data-n="${i}">⚠ Eksik / hasarlı</button></div>${s == 'bad' ? `<input data-note="${i}" placeholder="Ne eksik / hasarlı? (ör. 2 kapak çizik)" value="${esc(it.n || '')}">` : ''}</li>`;
+        }).join('');
+        const set = (i, v) => { var _a, _b; const t = ML[i][0], cur = (_a = SV.items[t]) === null || _a === void 0 ? void 0 : _a.s; if (cur == v)
+            delete SV.items[t];
+        else
+            SV.items[t] = { s: v, t: new Date().toISOString(), w: svWho, n: ((_b = SV.items[t]) === null || _b === void 0 ? void 0 : _b.n) || '' }; svSave(); svRender(); if (v == 'bad' && cur != v) {
+            const n = $(`[data-note="${i}"]`);
+            if (n)
+                n.focus();
+        } };
+        $$('#svList [data-y]').forEach(b => b.onclick = () => set(+b.dataset.y, 'ok'));
+        $$('#svList [data-n]').forEach(b => b.onclick = () => set(+b.dataset.n, 'bad'));
+        $$('#svList [data-note]').forEach(x => x.onchange = () => { const t = ML[+x.dataset.note][0]; if (SV.items[t]) {
+            SV.items[t].n = x.value;
+            svSave();
+        } });
+        $('#svLog').innerHTML = SV.pk.length ? '<h3>Okutulan paketler (' + SV.pk.length + ')</h3>' + SV.pk.slice().reverse().map(p => `<div><b>${esc(p.id)}</b><span>${fmtT(p.t)}${p.w ? ' · ' + esc(p.w) : ''}</span></div>`).join('') : '';
+    }
+    $('#svWho').onchange = e => { svWho = e.target.value.trim(); try {
+        localStorage.svWho = svWho;
+    }
+    catch (_a) { } };
+    // QR okuma: Chrome'un yerleşik okuyucusu, yoksa jsQR
+    let camStream = null, scanTimer = 0;
+    function scanStop() { clearTimeout(scanTimer); camStream === null || camStream === void 0 ? void 0 : camStream.getTracks().forEach(t => t.stop()); camStream = null; $('#scan').style.display = 'none'; }
+    $('#scanX').onclick = scanStop;
+    function gotQR(raw) {
+        let id = raw;
+        try {
+            const u = new URL(raw);
+            id = u.searchParams.get('pk') || u.searchParams.get('p') || raw;
+        }
+        catch (_a) { }
+        const old = SV.pk.find(p => p.id === id);
+        if (old) {
+            toast(`${id} daha önce teslim alındı (${fmtT(old.t)})`);
+            return;
+        }
+        SV.pk.push({ id, t: new Date().toISOString(), w: svWho });
+        svSave();
+        svRender();
+        toast('✓ Paket teslim alındı: ' + id);
+    }
+    $('#svScan').onclick = async () => {
+        if (!svWho) {
+            toast('Önce teslim alanın adını yazın');
+            $('#svWho').focus();
+            return;
+        }
+        try {
+            camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        }
+        catch (e) {
+            toast('Kamera açılamadı. Tarayıcıda kamera iznini verin.');
+            return;
+        }
+        const v = $('#cam');
+        v.srcObject = camStream;
+        await v.play().catch(() => { });
+        $('#scan').style.display = 'flex';
+        let det = null;
+        if ('BarcodeDetector' in window) {
+            try {
+                det = new window.BarcodeDetector({ formats: ['qr_code'] });
+            }
+            catch (_a) { }
+        }
+        if (!det) {
+            try {
+                await ensureScript('https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js', 'jsQR');
+            }
+            catch (_b) {
+                scanStop();
+                toast('QR okuyucu yüklenemedi.');
+                return;
+            }
+        }
+        const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true });
+        const tick = async () => {
+            if (!camStream)
+                return;
+            try {
+                if (v.readyState >= 2) {
+                    let r = null;
+                    if (det) {
+                        const c = await det.detect(v);
+                        if (c[0])
+                            r = c[0].rawValue;
+                    }
+                    else {
+                        cv.width = v.videoWidth;
+                        cv.height = v.videoHeight;
+                        cx.drawImage(v, 0, 0);
+                        const im = cx.getImageData(0, 0, cv.width, cv.height), q = window.jsQR(im.data, im.width, im.height);
+                        if (q)
+                            r = q.data;
+                    }
+                    if (r) {
+                        scanStop();
+                        gotQR(r);
+                        return;
+                    }
+                }
+            }
+            catch (_a) { }
+            scanTimer = setTimeout(tick, 250);
+        };
+        tick();
+    };
     function mlSave() { try {
         localStorage[mlKey] = JSON.stringify(mlDone);
     }

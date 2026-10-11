@@ -6426,18 +6426,6 @@ if (typeof exports === 'object' && typeof module === 'object')
             const tw = 2 * r / nT, th = tw * H / W, rowsT = Math.ceil(2 * r / th), scT = Wc / tw, bigW = nT * Wc;
             Dout = Math.max(600, Math.min(1600, Math.round(2 * r * scT)));
             try {
-                const big = document.createElement('canvas');
-                big.width = bigW;
-                big.height = rowsT * Hc;
-                const bx = big.getContext('2d');
-                bx.fillStyle = '#fff';
-                bx.fillRect(0, 0, big.width, big.height);
-                for (let ro = 0; ro < rowsT; ro++)
-                    for (let co = 0; co < nT; co++) {
-                        cam.setViewOffset(W, H, cx - r + co * tw, cy - r + ro * th, tw, th);
-                        bx.drawImage(rtShot(Wc, Hc), co * Wc, ro * Hc);
-                    }
-                rtFree();
                 const oc = document.createElement('canvas');
                 oc.width = oc.height = Dout;
                 const x = oc.getContext('2d');
@@ -6445,8 +6433,14 @@ if (typeof exports === 'object' && typeof module === 'object')
                 x.fillRect(0, 0, Dout, Dout);
                 x.imageSmoothingEnabled = true;
                 x.imageSmoothingQuality = 'high';
-                x.drawImage(big, 0, 0, bigW, bigW, 0, 0, Dout, Dout);
-                img = oc.toDataURL('image/jpeg', .95);
+                const k = Dout / (2 * r), tW = Math.max(64, Math.round(tw * k)), tH = Math.max(64, Math.round(th * k));
+                for (let ro = 0; ro < rowsT; ro++)
+                    for (let co = 0; co < nT; co++) {
+                        cam.setViewOffset(W, H, cx - r + co * tw, cy - r + ro * th, tw, th);
+                        x.drawImage(rtShot(tW, tH), co * tw * k, ro * th * k, tw * k, th * k);
+                    }
+                rtFree();
+                img = oc.toDataURL('image/jpeg', .92);
             }
             finally {
                 cam.clearViewOffset();

@@ -6435,9 +6435,9 @@ if (typeof exports === 'object' && typeof module === 'object')
                 for (let ro = 0; ro < rowsT; ro++)
                     for (let co = 0; co < nT; co++) {
                         cam.setViewOffset(W, H, cx - r + co * tw, cy - r + ro * th, tw, th);
-                        ren.render(scene, cam);
-                        bx.drawImage(cvm, co * Wc, ro * Hc);
+                        bx.drawImage(rtShot(Wc, Hc), co * Wc, ro * Hc);
                     }
+                rtFree();
                 const oc = document.createElement('canvas');
                 oc.width = oc.height = Dout;
                 const x = oc.getContext('2d');
@@ -6762,6 +6762,35 @@ if (typeof exports === 'object' && typeof module === 'object')
         x.putImageData(im, 0, 0);
         return cv.toDataURL('image/jpeg', .92);
     }
+    // Sahneyi gizli bir çizim alanına çizip piksel olarak okur (tablette ekran görüntüsü boş gelmesin)
+    let RT = null, RTC = null;
+    function rtShot(w, h) {
+        if (!RT || RT.width !== w || RT.height !== h) {
+            if (RT)
+                RT.dispose();
+            RT = new THREE.WebGLRenderTarget(w, h, { samples: TOUCH ? 0 : 4 });
+            RT.texture.encoding = THREE.sRGBEncoding;
+            RTC = document.createElement('canvas');
+            RTC.width = w;
+            RTC.height = h;
+        }
+        const old = ren.getRenderTarget();
+        ren.setRenderTarget(RT);
+        ren.clear();
+        ren.render(scene, cam);
+        const buf = new Uint8Array(w * h * 4);
+        ren.readRenderTargetPixels(RT, 0, 0, w, h, buf);
+        ren.setRenderTarget(old);
+        const x = RTC.getContext('2d'), im = x.createImageData(w, h);
+        for (let y = 0; y < h; y++)
+            im.data.set(buf.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+        x.putImageData(im, 0, 0);
+        return RTC;
+    }
+    function rtFree() { if (RT) {
+        RT.dispose();
+        RT = null;
+    } RTC = null; }
     /* ---- seçim, görünürlük ---- */
     function focus(ks) { const bb = new THREE.Box3(); (ks.length ? ks.flatMap(k => parts[k].meshes) : allMeshes).forEach(m => bb.expandByObject(m)); const c = bb.getCenter(new THREE.Vector3()), s = bb.getSize(new THREE.Vector3()).length(); const d = cam.position.clone().sub(ctl.target).normalize(); ctl.target.copy(c); cam.position.copy(c).addScaledVector(d, ks.length ? Math.max(s * 2.5, .5) : 1.9); }
     function actUI() { const on = sel.length > 0 || hid.size > 0 || gho.size > 0; stage.classList.toggle('hasAct', on); ['aH', 'aG', 'aI'].forEach(i => $('#' + i).disabled = !sel.length); $('#aG').textContent = sel.length && sel.every(k => gho.has(k)) ? 'Opak yap' : 'Şeffaflaştır'; $('#aC').textContent = (hid.size ? hid.size + ' gizli' : '') + (hid.size && gho.size ? ' · ' : '') + (gho.size ? gho.size + ' şeffaf' : ''); }

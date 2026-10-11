@@ -6123,7 +6123,7 @@ if (typeof exports === 'object' && typeof module === 'object')
             applyCut();
         }
     });
-    // Araç şeridini kutucuklara ayır: düzlem seçimi + göster/kapat, mesafe, kesitte ölç, detaylar, ölçek
+    // Araç şeridini kutucuklara ayır: düzlem seçimi + göster/kapat, mesafe, kesitte ölç, detaylar
     function popGroup() {
         const p = $('#pop');
         if (tool != 'cut')
@@ -6144,10 +6144,8 @@ if (typeof exports === 'object' && typeof module === 'object')
             toolRow.after(d);
         }
         const sc = [...p.querySelectorAll(':scope>.row')].find(r => r.querySelector('#dsc')), fs = [...p.querySelectorAll(':scope>.row')].find(r => r.querySelector('#fsb'));
-        if (sc && fs && sc !== fs) {
-            sc.append(...fs.children);
-            fs.remove();
-        }
+        // Ölçek ve 'Kesiti ölçülendir' montajda kullanılmıyor
+        [sc, fs].forEach(r => r && r.remove());
     }
     const rc = new THREE.Raycaster();
     let dn = null, drag = false;

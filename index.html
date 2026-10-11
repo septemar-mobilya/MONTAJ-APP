@@ -100,13 +100,23 @@ aside{position:absolute;right:0;top:0;bottom:52px;width:min(320px,52vw);z-index:
 <div class="ov" id="det" style="overflow:auto;justify-content:flex-start;padding:10px"><div style="display:flex;gap:8px"><button id="dx">Kapat</button><button class="p" id="dpng">PNG indir</button><button id="dpr">🖨 Gerçek ölçekte yazdır</button></div><div id="dsv" style="background:#fff;width:min(96vw,720px);border-radius:10px;padding:8px"></div></div>
 <div id="pkp"></div>
 
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
-<script type="module">
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
-import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+<div id="err" hidden style="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#7f1d1d;color:#fff;padding:10px 12px;border-radius:10px;font:13px/1.4 system-ui,sans-serif;max-height:40%;overflow:auto"></div>
+<script>
+// Hata olursa ekranda göster (tablette konsol görülemediği için)
+(function(){var shown=0;function show(m){var e=document.getElementById('err');if(!e||shown>4)return;shown++;e.hidden=false;e.innerHTML+=(e.innerHTML?'<br>':'')+'<b>Hata:</b> '+String(m).replace(/</g,'&lt;')}
+window.addEventListener('error',function(ev){if(ev.message)show(ev.message+(ev.lineno?' (satır '+ev.lineno+')':''));else if(ev.target&&ev.target.src)show('Yüklenemedi: '+ev.target.src)},true);
+window.__showErr=show;})();
+</script>
+<!-- Klasik betikler: eski tablet tarayıcılarında da çalışır (import map gerektirmez) -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.18.1/meshopt_decoder.js"></script>
+<script>
+(function(){'use strict';
+if(!window.THREE||!THREE.OrbitControls||!THREE.GLTFLoader){window.__showErr&&window.__showErr('3B kütüphanesi indirilemedi. İnternet bağlantısını kontrol edip sayfayı yenileyin.');return}
+const {OrbitControls,GLTFLoader,DRACOLoader}=THREE,MeshoptDecoder=window.MeshoptDecoder;
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],mats=m=>[].concat(m.material);
 const IC={home:'M3 11l9-8 9 8M5 10v10h14V10',draw:'M4 4h16v16H4zM4 15l5-5 4 4 3-3 4 4',cube:'M12 2l9 5v10l-9 5-9-5V7zM12 12l9-5M12 12v10M12 12L3 7',list:'M5 4h14v16H5zM9 9h6M9 13h6M9 17h4',gear:'M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3M12 9a3 3 0 100 6 3 3 0 000-6',pal:'M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11zM7.5 11h.01M10 7h.01M15 7h.01',pin:'M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11zM12 7.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5',fac:'M3 21V10l6 4v-4l6 4V6h6v15z',clip:'M7 4h10v17H7zM10 3h4v3h-4zM9 11h6M9 15h6',shield:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5L16 9.5',box:'M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8',truck:'M3 6h11v10H3zM14 9h4l3 3v4h-7z',doc:'M6 3h9l4 4v14H6zM14 3v5h5',rot:'M21 12a9 9 0 11-3-6.7M21 4v5h-5',pan:'M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-5-5M11 8v6M8 11h6',cut:'M5 5h14v14H5zM2 12h20',rule:'M3 15L15 3l6 6L9 21zM8 10l2 2M11 7l2 2M5 13l2 2',tree:'M4 5h4M10 5h10M7 12h4M13 12h7M7 19h4M13 19h7M4 5v14M4 12h3M4 19h3'};
@@ -122,7 +132,7 @@ const stage=$('#stage'),scene=new THREE.Scene();scene.background=new THREE.Color
 const cam=new THREE.PerspectiveCamera(40,1,.001,100);cam.position.set(1.2,.8,1.6);
 const ren=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});ren.localClippingEnabled=true;
 const DPR_HI=Math.min(devicePixelRatio||1,1.75);ren.setPixelRatio(DPR_HI);ren.domElement.className='gl';stage.prepend(ren.domElement);
-scene.add(new THREE.HemisphereLight(0xffffff,0x8892a0,1.2));const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(2,3,2);scene.add(dl);
+ren.outputEncoding=THREE.sRGBEncoding;scene.add(new THREE.HemisphereLight(0xffffff,0x8892a0,.85));const dl=new THREE.DirectionalLight(0xffffff,.75);dl.position.set(2,3,2);scene.add(dl);
 const ctl=new OrbitControls(cam,ren.domElement);ctl.enableDamping=true;ctl.dampingFactor=.14;ctl.screenSpacePanning=true;
 let dirty=true,lastR=0;
 const fitSz=()=>{dirty=true;const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;ren.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()};new ResizeObserver(fitSz).observe(stage);
@@ -395,7 +405,7 @@ let detN=0,detS='';function showDet(svg,n){detS=svg;detN=n;$('#dsv').innerHTML=s
 $('#dx').onclick=()=>$('#det').style.display='none';$('#dpng').onclick=()=>dlSvg(detS,'detay-'+detN+'.png');
 $('#dpr').onclick=()=>{const m=detS.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);if(!m)return;const k=3.7795;$('#pkp').innerHTML=detS.replace('style="width:100%"',`style="width:${(m[1]/k).toFixed(1)}mm;height:${(m[2]/k).toFixed(1)}mm"`);document.body.classList.add('pp');const dn=()=>{document.body.classList.remove('pp');removeEventListener('afterprint',dn)};addEventListener('afterprint',dn);setTimeout(()=>print(),250)};
 function dlSvg(svg,name){const m=svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/),w=+m[1],h=+m[2],img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click()})};img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '))}
-function view(pos,up,hw,hh,pw,ph,tg){const oc=new THREE.OrthographicCamera(-hw,hw,hh,-hh,.01,50);oc.position.copy(pos);oc.up.copy(up);oc.lookAt(tg||scene.position);const mxT=Math.min(4096,ren.capabilities.maxTextureSize||4096);if(pw>mxT||ph>mxT){const q0=Math.min(mxT/pw,mxT/ph);pw=Math.floor(pw*q0);ph=Math.floor(ph*q0)}const rt=new THREE.WebGLRenderTarget(pw,ph,{samples:(matchMedia('(pointer:coarse)').matches||pw*ph>3e6)?0:4});rt.texture.colorSpace=THREE.SRGBColorSpace;const old=ren.getRenderTarget(),bg=scene.background;scene.background=new THREE.Color(0xffffff);
+function view(pos,up,hw,hh,pw,ph,tg){const oc=new THREE.OrthographicCamera(-hw,hw,hh,-hh,.01,50);oc.position.copy(pos);oc.up.copy(up);oc.lookAt(tg||scene.position);const mxT=Math.min(4096,ren.capabilities.maxTextureSize||4096);if(pw>mxT||ph>mxT){const q0=Math.min(mxT/pw,mxT/ph);pw=Math.floor(pw*q0);ph=Math.floor(ph*q0)}const rt=new THREE.WebGLRenderTarget(pw,ph,{samples:(matchMedia('(pointer:coarse)').matches||pw*ph>3e6)?0:4});rt.texture.encoding=THREE.sRGBEncoding;const old=ren.getRenderTarget(),bg=scene.background;scene.background=new THREE.Color(0xffffff);
  ren.setRenderTarget(rt);ren.render(scene,oc);const buf=new Uint8Array(pw*ph*4);ren.readRenderTargetPixels(rt,0,0,pw,ph,buf);ren.setRenderTarget(old);scene.background=bg;rt.dispose();
  const cv=document.createElement('canvas');cv.width=pw;cv.height=ph;const x=cv.getContext('2d'),im=x.createImageData(pw,ph);for(let y=0;y<ph;y++)im.data.set(buf.subarray((ph-1-y)*pw*4,(ph-y)*pw*4),y*pw*4);x.putImageData(im,0,0);return cv.toDataURL('image/jpeg',.92)}
 
@@ -510,7 +520,7 @@ function boot(root,label){
  $('#q').value='';renderTree();applyCut();applyVis();info();dirty=true}
 
 /* ---- yükleme ---- */
-const DRACO_URL='https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/gltf/draco_decoder.js';
+const DRACO_URL='https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/libs/draco/gltf/draco_decoder.js';
 const scriptCache={};
 function ensureScript(src,g){if(window[g])return Promise.resolve();if(scriptCache[src])return scriptCache[src];
  return scriptCache[src]=new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>window[g]?res():rej(new Error(g+' yüklenemedi'));s.onerror=()=>{delete scriptCache[src];rej(new Error('Draco çözücü indirilemedi'))};document.head.appendChild(s)})}
@@ -519,7 +529,7 @@ const draco=new DRACOLoader();draco.setDecoderConfig({type:'js'});
 draco._loadLibrary=()=>ensureScript(DRACO_URL,'DracoDecoderModule').then(()=>'var _scriptDir;\nvar DracoDecoderModule='+window.DracoDecoderModule.toString()+';');
 const ogW=draco._getWorker.bind(draco);
 draco._getWorker=(id,c)=>ogW(id,c).then(w=>{if(!w._hk){w._hk=1;w.addEventListener('error',ev=>{try{ev.preventDefault()}catch{}Object.values(w._callbacks||{}).forEach(cb=>cb.reject(new Error('Draco çözücü hatası')))})}return w});
-const mkLoader=mgr=>{const l=new GLTFLoader(mgr);l.setDRACOLoader(draco);l.setMeshoptDecoder(MeshoptDecoder);return l};
+const mkLoader=mgr=>{const l=new GLTFLoader(mgr);l.setDRACOLoader(draco);if(MeshoptDecoder)l.setMeshoptDecoder(MeshoptDecoder);return l};
 function gltfExt(buf){try{const dv=new DataView(buf);let j;if(dv.getUint32(0,true)===0x46546C67)j=new TextDecoder().decode(new Uint8Array(buf,20,dv.getUint32(12,true)));else j=new TextDecoder().decode(new Uint8Array(buf));j=JSON.parse(j);return(j.extensionsUsed||[])}catch{return[]}}
 let loadSeq=0,busyT0=0,busyTick=null;
 function busy(t,c){$('#busy').hidden=!t;$('#drop').hidden=true;clearInterval(busyTick);if(!t){busyT0=0;return}if(!busyT0)busyT0=performance.now();$('#busyCancel').hidden=!c;
@@ -573,6 +583,7 @@ fitSz();
  if(!u){boot(sample(),'Örnek kabin (gösterim)');return}
  busy('Model indiriliyor…');const id=++loadSeq;
  ensureScript(DRACO_URL,'DracoDecoderModule').catch(()=>{}).then(()=>mkLoader().load(u,g=>{if(id!==loadSeq)return;try{boot(g.scene,decodeURIComponent(u.split('/').pop()))}finally{busy()}},x=>{if(x.total)$('#busyTxt').textContent=`Model indiriliyor… %${Math.round(x.loaded/x.total*100)}`},e=>{busy();toast('Model indirilemedi: '+u);boot(sample(),'Örnek kabin (gösterim)')}))})();
+})();
 </script>
 
 </body>

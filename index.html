@@ -74,7 +74,7 @@ aside{position:absolute;right:0;top:0;bottom:96px;width:min(320px,52vw);z-index:
       <div id="exb"><span>Patlat</span><input id="ex" type="range" min="0" max="1" step=".01" value="0" aria-label="Patlatma"><button id="clr">Seçimi temizle</button></div>
       <canvas id="pen"></canvas>
       <div id="act"><button id="aH">Gizle</button><button id="aG">Şeffaflaştır</button><button id="aI">Yalnız bunu göster</button><button id="aA">Tümünü göster</button><button id="aU">Geri al</button><span id="aC"></span></div>
-      <aside><div id="info"></div><input id="q" type="search" placeholder="Parça ara…"><div id="tree"></div></aside>
+      <aside><div id="info"></div><input id="q" type="search" placeholder="Mobilya veya parça ara…"><div id="tree"></div></aside>
       <div id="tb"></div>
       <div id="toast" hidden></div>
       <div id="drop" hidden>GLB dosyasını bırakın</div>
@@ -97,7 +97,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],mat
 const IC={home:'M3 11l9-8 9 8M5 10v10h14V10',draw:'M4 4h16v16H4zM4 15l5-5 4 4 3-3 4 4',cube:'M12 2l9 5v10l-9 5-9-5V7zM12 12l9-5M12 12v10M12 12L3 7',list:'M5 4h14v16H5zM9 9h6M9 13h6M9 17h4',gear:'M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3M12 9a3 3 0 100 6 3 3 0 000-6',pal:'M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11zM7.5 11h.01M10 7h.01M15 7h.01',pin:'M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11zM12 7.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5',fac:'M3 21V10l6 4v-4l6 4V6h6v15z',clip:'M7 4h10v17H7zM10 3h4v3h-4zM9 11h6M9 15h6',shield:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5L16 9.5',box:'M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8',truck:'M3 6h11v10H3zM14 9h4l3 3v4h-7z',doc:'M6 3h9l4 4v14H6zM14 3v5h5',rot:'M21 12a9 9 0 11-3-6.7M21 4v5h-5',pan:'M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3',zoom:'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-5-5M11 8v6M8 11h6',cut:'M5 5h14v14H5zM2 12h20',rule:'M3 15L15 3l6 6L9 21zM8 10l2 2M11 7l2 2M5 13l2 2',tree:'M4 5h4M10 5h10M7 12h4M13 12h7M7 19h4M13 19h7M4 5v14M4 12h3M4 19h3'};
 const svg=(d,s=22)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 IC.chev='M9 6l6 6-6 6';IC.eye='M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 100 6 3 3 0 000-6';IC.eyeOff='M3 3l18 18M10.6 5.1A10 10 0 0112 5c6 0 10 7 10 7a17 17 0 01-3.2 3.9M6.6 6.6C3.9 8.4 2 12 2 12s4 7 10 7a9.6 9.6 0 005.4-1.6';
-$('#tb').innerHTML=[['rot','Döndür','rot'],['pan','Kaydır','pan'],['fit','Yakınlaştır','zoom'],['view','Görünüm','cube'],['cut','Kesit','cut'],['olc','Ölçü','rule'],['tree','Parça Ağacı','tree']].map(([t,l,i])=>`<button data-t="${t}">${svg(IC[i],20)}${l}</button>`).join('');
+$('#tb').innerHTML=[['rot','Döndür','rot'],['pan','Kaydır','pan'],['fit','Yakınlaştır','zoom'],['view','Görünüm','cube'],['cut','Kesit','cut'],['olc','Ölçü','rule'],['tree','Mobilya Ağacı','tree']].map(([t,l,i])=>`<button data-t="${t}">${svg(IC[i],20)}${l}</button>`).join('');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const data={},go=()=>{};
 let DET=[];try{DET=JSON.parse(localStorage.det||'[]')}catch{}
@@ -387,7 +387,14 @@ function view(pos,up,hw,hh,pw,ph,tg){const oc=new THREE.OrthographicCamera(-hw,h
 /* ---- seçim, görünürlük ---- */
 function focus(ks){const bb=new THREE.Box3();(ks.length?ks.flatMap(k=>parts[k].meshes):allMeshes).forEach(m=>bb.expandByObject(m));const c=bb.getCenter(new THREE.Vector3()),s=bb.getSize(new THREE.Vector3()).length();const d=cam.position.clone().sub(ctl.target).normalize();ctl.target.copy(c);cam.position.copy(c).addScaledVector(d,ks.length?Math.max(s*2.5,.5):1.9)}
 function actUI(){const on=sel.length>0||hid.size>0||gho.size>0;stage.classList.toggle('hasAct',on);['aH','aG','aI'].forEach(i=>$('#'+i).disabled=!sel.length);$('#aG').textContent=sel.length&&sel.every(k=>gho.has(k))?'Opak yap':'Şeffaflaştır';$('#aC').textContent=(hid.size?hid.size+' gizli':'')+(hid.size&&gho.size?' · ':'')+(gho.size?gho.size+' şeffaf':'')}
-function explode(v){dirty=true;exv=v;allMeshes.forEach(m=>m.userData.wp=null);for(const p of Object.values(parts))p.meshes.forEach(m=>{m.position.copy(m.parent.worldToLocal(m.userData.w0.clone().addScaledVector(p.dir,v*.5)))})}
+// Patlatma mobilya mobilya: her mobilya bütün hâlinde, kabin merkezinden dışarı (yatay) kayar
+let FURN=[];
+function buildFurn(){let lvl=ROOT.children;while(lvl.length==1&&lvl[0].children.length)lvl=lvl[0].children;
+ FURN=lvl.map(it=>{const ms=[];leafKeys(it).forEach(k=>ms.push(...parts[k].meshes));if(!it.children.length&&it.key)ms.push(...parts[it.key].meshes);
+  const bb=new THREE.Box3();ms.forEach(m=>bb.expandByObject(m));const c=bb.isEmpty()?new V3():bb.getCenter(new V3()),d=new V3(c.x,0,c.z);
+  if(d.length()<.05)d.copy(c);if(d.length()<1e-6)d.set(0,1,0);return{it,meshes:[...new Set(ms)],dir:d.normalize()}})}
+function explode(v){dirty=true;exv=v;allMeshes.forEach(m=>m.userData.wp=null);
+ FURN.forEach(f=>f.meshes.forEach(m=>{m.position.copy(m.parent.worldToLocal(m.userData.w0.clone().addScaledVector(f.dir,v*.6)))}))}
 function applyVis(){const S1=new Set(sel);for(const[k,p]of Object.entries(parts)){const kind=S1.has(k)?'hl':gho.has(k)?'ghost':(sel.length&&dimOn)?'dim':null;
   p.meshes.forEach(m=>{m.visible=!hid.has(k);setKind(m,kind);m.renderOrder=kind=='dim'||kind=='ghost'?2:0})}
  dirty=true;actUI();refreshRows();exUI();if(PL.length)schedOl(true)}
@@ -440,7 +447,7 @@ function refreshRows(){const S1=new Set(sel);rowMap.forEach((R,it)=>{const ks=le
 function revealInTree(it){if(!it||$('#q').value)return;const ch=[];let p=it.parent;while(p&&p!==ROOT){ch.unshift(p);p=p.parent}ch.forEach(c=>toggleRow(c,true));const R=rowMap.get(it);if(R)R.r.scrollIntoView({block:'nearest'})}
 $('#q').addEventListener('input',e=>renderTree(e.target.value.trim()));
 function info(){const el=$('#info');
- if(!selItem){const n=Object.keys(parts).length;el.innerHTML=`<h3>Parça seçilmedi</h3><div class="pth">Modelde bir mobilyaya dokunun ya da listeden seçin. Aynı yere tekrar dokununca üst montaj grubu seçilir, çift dokunuş dönme merkezini taşır.</div><div class="kv"><span>Toplam parça</span><b>${n}</b></div><div class="kv"><span>Gizli</span><b>${hid.size}</b></div>`;return}
+ if(!selItem){const n=Object.keys(parts).length;el.innerHTML=`<h3>Parça seçilmedi</h3><div class="pth">Modelde bir mobilyaya dokunun ya da mobilya ağacından seçin. Aynı yere tekrar dokununca üst montaj grubu seçilir, çift dokunuş dönme merkezini taşır.</div><div class="kv"><span>Toplam parça</span><b>${n}</b></div><div class="kv"><span>Gizli</span><b>${hid.size}</b></div>`;return}
  const bb=new THREE.Box3();sel.forEach(k=>parts[k].meshes.forEach(m=>bb.expandByObject(m)));const z=bb.getSize(new V3()),mm=v=>Math.round(v/sc*F);
  const path=[];let p=selItem.parent;while(p&&p!==ROOT){path.unshift(p.name);p=p.parent}
  el.innerHTML=`<h3></h3><div class="pth"></div><div class="kv"><span>Genişlik (X)</span><b>${mm(z.x)} mm</b></div><div class="kv"><span>Yükseklik (Y)</span><b>${mm(z.y)} mm</b></div><div class="kv"><span>Derinlik (Z)</span><b>${mm(z.z)} mm</b></div>`+(sel.length>1?`<div class="kv"><span>Alt parça</span><b>${sel.length}</b></div>`:'');
@@ -468,7 +475,7 @@ function boot(root,label){
   TRIS+=(g.index?g.index.count:g.attributes.position.count)/3;allMeshes.push(o);o.userData.w0=o.getWorldPosition(new V3());o.userData.wbox=null;o.userData.wp=null});
  let n=0;ITEMS.forEach(it=>{if(it.children.length)return;const k='p'+(n++);it.key=k;const ms=[];it.obj.traverse(x=>{if(x.isMesh){ms.push(x);x.userData.k=k}});parts[k]={name:it.name,meshes:ms,item:it}});
  allMeshes.forEach(m=>{if(!m.userData.k||!parts[m.userData.k]){const k='p'+(n++);parts[k]={name:niceName(m),meshes:[m]};m.userData.k=k}});
- for(const p of Object.values(parts)){const bb=new THREE.Box3();p.meshes.forEach(m=>bb.expandByObject(m));p.bb=bb.clone();p.dir=bb.getCenter(new V3()).normalize();p.dim=bb.getSize(new V3()).toArray().map(v=>Math.round(v/sc*F)).sort((a,b)=>b-a)}
+ buildFurn();for(const p of Object.values(parts)){const bb=new THREE.Box3();p.meshes.forEach(m=>bb.expandByObject(m));p.bb=bb.clone();p.dir=bb.getCenter(new V3()).normalize();p.dim=bb.getSize(new V3()).toArray().map(v=>Math.round(v/sc*F)).sort((a,b)=>b-a)}
  pl.forEach(q=>{q.on=false;q.s=1;q.v=0});ap=2;olSlow=false;
  ctl.target.set(0,0,0);cam.position.set(1.2,.8,1.6);
  $('#fi').innerHTML=`<b>${esc(label)}</b><span>${Object.keys(parts).length} parça · ${Math.round(TRIS).toLocaleString('tr-TR')} üçgen</span>`;
